@@ -35,7 +35,7 @@ from ycm import base
 
 
 @contextlib.contextmanager
-def MockCurrentFiletypes( filetypes = [''] ):
+def MockCurrentFiletypes( filetypes = [ '' ] ):
   with patch( 'ycm.vimsupport.CurrentFiletypes', return_value = filetypes ):
     yield
 
@@ -57,49 +57,49 @@ def MockTextAfterCursor( text ):
 def AdjustCandidateInsertionText_Basic_test():
   with MockTextAfterCursor( 'bar' ):
     eq_( [ { 'abbr': 'foobar', 'word': 'foo' } ],
-         base.AdjustCandidateInsertionText( [ 'foobar' ] ) )
+         base.AdjustCandidateInsertionText( [ { 'word': 'foobar' } ] ) )
 
 
 def AdjustCandidateInsertionText_ParenInTextAfterCursor_test():
   with MockTextAfterCursor( 'bar(zoo' ):
     eq_( [ { 'abbr': 'foobar', 'word': 'foo' } ],
-         base.AdjustCandidateInsertionText( [ 'foobar' ] ) )
+         base.AdjustCandidateInsertionText( [ { 'word': 'foobar' } ] ) )
 
 
 def AdjustCandidateInsertionText_PlusInTextAfterCursor_test():
   with MockTextAfterCursor( 'bar+zoo' ):
     eq_( [ { 'abbr': 'foobar', 'word': 'foo' } ],
-         base.AdjustCandidateInsertionText( [ 'foobar' ] ) )
+         base.AdjustCandidateInsertionText( [ { 'word': 'foobar' } ] ) )
 
 
 def AdjustCandidateInsertionText_WhitespaceInTextAfterCursor_test():
   with MockTextAfterCursor( 'bar zoo' ):
     eq_( [ { 'abbr': 'foobar', 'word': 'foo' } ],
-         base.AdjustCandidateInsertionText( [ 'foobar' ] ) )
+         base.AdjustCandidateInsertionText( [ { 'word': 'foobar' } ] ) )
 
 
 def AdjustCandidateInsertionText_MoreThanWordMatchingAfterCursor_test():
   with MockTextAfterCursor( 'bar.h' ):
     eq_( [ { 'abbr': 'foobar.h', 'word': 'foo' } ],
-         base.AdjustCandidateInsertionText( [ 'foobar.h' ] ) )
+         base.AdjustCandidateInsertionText( [ { 'word': 'foobar.h' } ] ) )
 
   with MockTextAfterCursor( 'bar(zoo' ):
     eq_( [ { 'abbr': 'foobar(zoo', 'word': 'foo' } ],
-         base.AdjustCandidateInsertionText( [ 'foobar(zoo' ] ) )
+         base.AdjustCandidateInsertionText( [ { 'word': 'foobar(zoo' } ] ) )
 
 
 def AdjustCandidateInsertionText_NotSuffix_test():
   with MockTextAfterCursor( 'bar' ):
     eq_( [ { 'abbr': 'foofoo', 'word': 'foofoo' } ],
-         base.AdjustCandidateInsertionText( [ 'foofoo' ] ) )
+         base.AdjustCandidateInsertionText( [ { 'word': 'foofoo' } ] ) )
 
 
 def AdjustCandidateInsertionText_NothingAfterCursor_test():
   with MockTextAfterCursor( '' ):
-    eq_( [ 'foofoo',
-           'zobar' ],
-         base.AdjustCandidateInsertionText( [ 'foofoo',
-                                              'zobar' ] ) )
+    eq_( [ { 'word': 'foofoo' },
+           { 'word': 'zobar' } ],
+         base.AdjustCandidateInsertionText( [ { 'word': 'foofoo' },
+                                              { 'word': 'zobar' } ] ) )
 
 
 def AdjustCandidateInsertionText_MultipleStrings_test():
@@ -108,17 +108,16 @@ def AdjustCandidateInsertionText_MultipleStrings_test():
            { 'abbr': 'zobar', 'word': 'zo' },
            { 'abbr': 'qbar', 'word': 'q' },
            { 'abbr': 'bar', 'word': '' }, ],
-         base.AdjustCandidateInsertionText( [ 'foobar',
-                                              'zobar',
-                                              'qbar',
-                                              'bar' ] ) )
+         base.AdjustCandidateInsertionText( [ { 'word': 'foobar' },
+                                              { 'word': 'zobar' },
+                                              { 'word': 'qbar' },
+                                              { 'word': 'bar' } ] ) )
 
 
 def AdjustCandidateInsertionText_DictInput_test():
   with MockTextAfterCursor( 'bar' ):
     eq_( [ { 'abbr': 'foobar', 'word': 'foo' } ],
-         base.AdjustCandidateInsertionText(
-           [ { 'word': 'foobar' } ] ) )
+         base.AdjustCandidateInsertionText( [ { 'word': 'foobar' } ] ) )
 
 
 def AdjustCandidateInsertionText_DontTouchAbbr_test():
@@ -180,7 +179,7 @@ def LastEnteredCharIsIdentifierChar_Basic_test():
 
 
 def LastEnteredCharIsIdentifierChar_FiletypeHtml_test():
-  with MockCurrentFiletypes( ['html'] ):
+  with MockCurrentFiletypes( [ 'html' ] ):
     with MockCurrentColumnAndLineContents( 3, 'ab-' ):
       ok_( base.LastEnteredCharIsIdentifierChar() )
 
@@ -272,7 +271,7 @@ def CurrentIdentifierFinished_InMiddleOfLine_test():
 
 
 def CurrentIdentifierFinished_Html_test():
-  with MockCurrentFiletypes( ['html'] ):
+  with MockCurrentFiletypes( [ 'html' ] ):
     with MockCurrentColumnAndLineContents( 4, 'bar-zoo' ):
       ok_( not base.CurrentIdentifierFinished() )
 
